@@ -16,11 +16,12 @@
         <button type="submit" name="submit" value="logout">
             Выйти
         </button>
-        <p>Вы авторизованны</p>
     </form>
 </body>
 </html>
 
 <?php 
-echo "123";
+
+echo "php";
+
 ?>
