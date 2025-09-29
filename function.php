@@ -29,12 +29,7 @@ function checkSession() {
     }
 }
 
-echo ('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) . "\n";
-echo ($_SERVER["HTTP_REFERER"]) . "\n";
-echo ($_SESSION["password"]) . "\n";
-echo ($_SESSION["login"]) . "\n";
-
-if (('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) == "http://localhost/php/" && ($_SERVER["HTTP_REFERER"]) == "http://localhost/php/main.php") {
+if (('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']) == "http://localhost/php/" && $_COOKIE['checker'] == 1) {
     $db->openCon();
     if($db->getUser($db->getCon(), $_SESSION["login"], $_SESSION["password"])) {
         header("Location: /php/main.php");
@@ -54,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if($db->getUser($db->getCon(), $login, $password)) {
             $_SESSION["login"] = $login;
             $_SESSION["password"] = $password;
+            setcookie("checker", 1, time() + 2000, "/");
             header("Location: /php/main.php");
             exit();
         } else {
@@ -62,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     elseif ($_POST["submit"] == "logout") {
         session_unset();
+        setcookie("checker", 0, time() + 2000, "/");
         header("Location: /php");
         exit();
     }
